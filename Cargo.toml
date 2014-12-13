@@ -1,0 +1,9 @@
+[package]
+
+name = "rush"
+version = "0.0.1"
+authors = ["Bethany Long <longb4@students.wwu.edu>"]
+
+[[bin]]
+
+name = "rush"
