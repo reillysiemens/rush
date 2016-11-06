@@ -9,7 +9,9 @@ fn main() {
 }
 
 fn process_line(s: String) {
-    let split_vec: Vec<&str> = s.split_str(" ").filter(|p| !p.is_empty()).collect();
+    let split_vec: Vec<&str> = s.split_whitespace()
+        .filter(|p| !p.is_empty())
+        .collect();
     execute::run(split_vec);
 }
 
@@ -22,17 +24,18 @@ mod prompt {
     }
 
     pub fn get_input() -> String {
-        let input = io::stdin()
-                        .read_line()
-                        .ok()
-                        .expect("Failed to read line");
+        let mut input = String::new();
+        io::stdin()
+            .read_line(&mut input)
+            .ok()
+            .expect("Failed to read line");
 
         input.trim().to_string()
     }
 }
 
 mod execute {
-    use std::io::Command;
+    use std::process::Command;
 
     pub fn run(command_line: Vec<&str>) {
         let mut cl = command_line.clone();
@@ -44,7 +47,9 @@ mod execute {
         };
 
         println!("Process exited with {}", output.status);
-        println!("stdout: {}", String::from_utf8_lossy(output.output.as_slice()));
-        println!("stderr: {}", String::from_utf8_lossy(output.error.as_slice()));
+        println!("stdout: {}",
+                 String::from_utf8_lossy(output.stdout.as_slice()));
+        println!("stderr: {}",
+                 String::from_utf8_lossy(output.stderr.as_slice()));
     }
 }
